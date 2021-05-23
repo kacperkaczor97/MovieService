@@ -4,10 +4,7 @@ import com.example.MovieService.model.Movie;
 import com.example.MovieService.service.MovieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,6 +35,41 @@ public class MovieController {
         return ResponseEntity.ok(movieById);
     }
 
+    @PostMapping
+    public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
 
+        if (movie == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        movieService.addMovie(movie);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Movie> updateMovieById(@PathVariable Long id, @RequestBody Movie movie) {
+
+        Movie moviesById = movieService.getMoviesById(id);
+
+        if (moviesById == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        movieService.updateMovieById(id, movie);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Movie> deleteMovie(@PathVariable Long id) {
+
+        if (movieService.getMoviesById(id) == null) {
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        movieService.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
 }

@@ -26,4 +26,15 @@ public class MovieService {
 
         return null;
     }
+
+    public void addMovie(Movie movie) {
+    }
+
+    public void deleteById(Long id) {
+
+    }
+
+    public void updateMovieById(Long id, Movie movie) {
+    }
 }
+

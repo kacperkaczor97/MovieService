@@ -1,6 +1,5 @@
 package com.example.MovieService.model;
 
-import java.util.Locale;
 
 public class Movie {
 
@@ -11,6 +10,7 @@ public class Movie {
     public Movie(Long id, String name) {
         this.id = id;
         this.name = name;
+
     }
 
     public Long getId() {
