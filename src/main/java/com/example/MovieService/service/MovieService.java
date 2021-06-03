@@ -1,40 +1,57 @@
 package com.example.MovieService.service;
 
 import com.example.MovieService.model.Movie;
+import com.example.MovieService.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-
 public class MovieService {
 
-    private static final List<Movie> movieList = List
-            .of(new Movie(1L, "Name One"), new Movie(2L, "Name Two"));
+    private final MovieRepository movieRepository;
+
+    public MovieService(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
+    }
 
     public List<Movie> getAllMovies() {
 
-        return movieList;
+        return movieRepository.findAll();
     }
 
-    public Movie getMoviesById(Long id) {
-        for (Movie movie : movieList) {
-            if (movie.getId().equals(id)) {
-                return movie;
-            }
-        }
+    public Optional<Movie> getMovieById(Long id) {
 
-        return null;
+        return movieRepository.findById(id);
     }
 
-    public void addMovie(Movie movie) {
+    public Movie addMovie(Movie movie) {
+
+        return movieRepository.save(movie);
     }
 
     public void deleteById(Long id) {
 
+        movieRepository.deleteById(id);
     }
 
     public void updateMovieById(Long id, Movie movie) {
+
+        Movie movieToUpdate = movieRepository.findById(id).get();
+
+        movieToUpdate.setName(movie.getName());
+        movieToUpdate.setCategory(movie.getCategory());
+
+        movieRepository.save(movie);
+    }
+
+    public void changeIsAvailableToTrue(Long id) {
+
+        Movie movie = movieRepository.findById(id).get();
+
+        movie.setAvailable(true);
+
+        movieRepository.save(movie);
     }
 }
-
